@@ -11,7 +11,6 @@ Add to `/etc/portage/repos.conf`:
     location = /usr/local/portage/overlays/shiz
     sync-type = git
     sync-uri = https://git.shiz.me/shiz/overlay.git
-    auto-sync = yes
     priority = 1000   # optional
 
 Make sure `/usr/local/portage/overlays` exist and is writable by the `portage` user.
