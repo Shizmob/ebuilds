@@ -1,0 +1,14 @@
+#!/bin/bash
+dir=$1
+while read -d '' -r x; do
+	n=$(echo "$x" | sed -e "s#^${dir}##")
+	v=$(cat "$x")
+	if [ x"$v" = x ]; then
+		unset "$n"
+	else
+		eval "export $n=\$v"
+	fi
+done < <(find "${dir}" -type f -print0)
+
+shift
+exec "$@"

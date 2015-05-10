@@ -1,0 +1,12 @@
+diff -ru bcron-0.10/bcron-exec.c bcron-0.10-patched/bcron-exec.c
+--- bcron-0.10/bcron-exec.c	2012-11-15 23:58:00.000000000 +0100
++++ bcron-0.10-patched/bcron-exec.c	2015-04-29 06:20:44.000000000 +0200
+@@ -22,6 +22,7 @@
+ 
+ const char program[] = "bcron-exec";
+ const int msg_show_pid = 0;
++int msg_debug_bits = 0;
+ 
+ extern char** environ;
+ 
+

@@ -1,0 +1,12 @@
+id:3:initdefault:
+
+# LEVELS
+si::sysinit:/sbin/rc sysinit
+rc::bootwait:/sbin/rc boot
+l0:0:wait:/sbin/rc shutdown 
+l1:1:wait:/sbin/rc single
+l3:3:wait:/sbin/rc default
+l6:6:wait:/sbin/rc reboot
+
+# TERMINALS
+c1:12345:respawn:/sbin/agetty -J 38400 tty1 linux

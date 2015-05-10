@@ -1,0 +1,54 @@
+#!/sbin/runscript
+
+: ${BCRON_SPOOL_PIDFILE:=/run/bcron-spool.pid}
+: ${BCRON_START_PIDFILE:=/run/bcron-start.pid}
+: ${BCRON_UPDATE_PIDFILE:=/run/bcron-update.pid}
+: ${BCRON_SOCKET:=/run/bcron-spool}
+: ${BCRON_SOCKET_PERMISSIONS:=0660}
+: ${BCRON_USER:=cron}
+: ${BCRON_GROUP:=cron}
+: ${BCRON_LOGFILE:=/var/log/bcron.log}
+
+depend() {
+	use logger
+}
+
+start() {
+	ebegin "Starting ${SVCNAME}"
+
+	# Re-export for bcron-start.
+	export BCRON_USER="${BCRON_USER}"
+	export BCRON_GROUP="${BCRON_GROUP}"
+
+	local uid=$(id -u "${BCRON_USER}")
+	local gid=$(id -g "${BCRON_GROUP}")
+
+	if ! start-stop-daemon -Smqbn bcron-start -p "${BCRON_START_PIDFILE}" -1 "${BCRON_LOGFILE}" -2 "${BCRON_LOGFILE}" \
+             envdir -- /etc/bcron bcron-start; then
+		eend $?
+		stop
+		return 1
+	fi
+	if ! start-stop-daemon -Smqbn bcron-spool -p "${BCRON_SPOOL_PIDFILE}" -1 "${BCRON_LOGFILE}" -2 "${BCRON_LOGFILE}" \
+             envdir -- /etc/bcron unixserver -u $uid -g $gid -r $gid -p "${BCRON_SOCKET_PERMISSIONS}" "${BCRON_SOCKET}" bcron-spool; then
+		eend $?
+		stop
+		return 1
+	fi
+	if ! start-stop-daemon -Smqbp "${BCRON_UPDATE_PIDFILE}" -1 "${BCRON_LOGFILE}" -2 "${BCRON_LOGFILE}" \
+             bcron-update -- /etc/crontab /etc/cron.d; then
+		eend $?
+		stop
+		return 1
+	fi
+	eend $?
+}
+
+stop() {
+	local r=0
+	ebegin "Stopping ${SVCNAME}"
+	start-stop-daemon -Kq envdir -n bcron-start -p "${BCRON_START_PIDFILE}" || r=1
+	start-stop-daemon -Kq envdir -n bcron-spool -p "${BCRON_SPOOL_PIDFILE}" || r=1
+	start-stop-daemon -Kq bcron-update -p "${BCRON_UPDATE_PIDFILE}" || r=1
+	eend $r
+}

@@ -1,0 +1,6 @@
+# /etc/conf.d/bcron: config file for /etc/init.d/bcron
+
+# Spool socket location.
+BCRON_SOCKET=/run/bcron-spool
+# Log file.
+BCRON_LOGFILE=/var/log/bcron.log
