@@ -20,7 +20,7 @@ src_compile()
 src_install()
 {
 	if use sysvinit; then
-		emake PREFIX="${D}" install-sysvinit || die "emake failed"
+		emake DESTDIR="${D}" install-sysvinit || die "emake failed"
 		insinto /etc
 		doins "${FILESDIR}/inittab"
 	fi

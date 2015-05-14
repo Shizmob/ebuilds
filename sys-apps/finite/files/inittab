@@ -1,5 +1,3 @@
-id:3:initdefault:
-
 # LEVELS
 si::sysinit:/sbin/rc sysinit
 rc::bootwait:/sbin/rc boot
