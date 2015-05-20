@@ -1,7 +1,7 @@
 EAPI=5
 DESCRIPTION="Fine init environment."
 HOMEPAGE="https://git.shiz.me/shiz/finite"
-LICENSE="BSD"
+LICENSE="BSD-2"
 SLOT="0"
 
 if [[ ${PV} != 9999 ]]; then
