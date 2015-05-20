@@ -3,12 +3,18 @@ DESCRIPTION="Fine init environment."
 HOMEPAGE="https://git.shiz.me/shiz/finite"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 
-inherit git-r3
-EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
-EGIT_COMMIT="v0.1"
+if [[ ${PV} != 9999 ]]; then
+	KEYWORDS="~amd64"
+	SRC_URI="https://git.shiz.me/shiz/finite/archive/v${PV}.tar.gz"
+	S="${WORKDIR}/${PN}-v${PV}"
+else
+	inherit git-r3
+	EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
+fi
+
 IUSE="+sysvinit"
+REQUIRED_USE="^^ ( sysvinit )"
 DEPEND="sysvinit? ( !sys-apps/sysvinit )"
 
 src_compile()
