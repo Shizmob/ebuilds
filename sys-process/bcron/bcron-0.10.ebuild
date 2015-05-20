@@ -10,7 +10,8 @@ KEYWORDS="amd64 x86"
 IUSE="doc"
 
 DEPEND=">=dev-libs/bglibs-1.031"
-RDEPEND=">=sys-process/cronbase-0.3.2
+RDEPEND="  sys-apps/findutils
+         >=sys-process/cronbase-0.3.2
            virtual/mta
            sys-apps/ucspi-unix"
 
