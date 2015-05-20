@@ -3,7 +3,6 @@ DESCRIPTION="Fine init environment."
 HOMEPAGE="https://git.shiz.me/shiz/finite"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 
 inherit git-r3
 EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
