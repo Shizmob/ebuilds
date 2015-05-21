@@ -1,34 +1,35 @@
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
 EAPI=5
-DESCRIPTION="Fine init environment."
+
+DESCRIPTION="Fine init environment"
 HOMEPAGE="https://git.shiz.me/shiz/finite"
+
 LICENSE="BSD-2"
 SLOT="0"
 
 if [[ ${PV} != 9999 ]]; then
+	MY_PV="v${PV}"
+	SRC_URI="https://git.shiz.me/shiz/finite/archive/${MY_PV}.tar.gz"
 	KEYWORDS="~amd64"
-	SRC_URI="https://git.shiz.me/shiz/finite/archive/v${PV}.tar.gz"
-	S="${WORKDIR}/${PN}-v${PV}"
+	S="${WORKDIR}/${PN}-${MY_PV}"
 else
 	inherit git-r3
 	EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
 fi
 
-IUSE="+sysvinit"
-REQUIRED_USE="^^ ( sysvinit )"
-DEPEND="sysvinit? ( !sys-apps/sysvinit )"
+RDEPEND="!sys-apps/sysvinit"
 
 src_compile()
 {
-	if use sysvinit; then
-		emake sysvinit || die "emake failed"
-	fi
+	emake sysvinit
 }
 
 src_install()
 {
-	if use sysvinit; then
-		emake DESTDIR="${D}" install-sysvinit || die "emake failed"
-		insinto /etc
-		doins "${FILESDIR}/inittab"
-	fi
+	emake DESTDIR="${D}" install-sysvinit
+	insinto /etc
+	doins "${FILESDIR}/inittab"
 }
