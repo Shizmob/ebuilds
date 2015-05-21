@@ -1,6 +1,12 @@
-EAPI=5
-DESCRIPTION="A new cron system designed with secure operations in mind."
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
 
+EAPI=5
+
+inherit cron eutils toolchain-funcs
+
+DESCRIPTION="A new cron system designed with secure operations in mind"
 HOMEPAGE="http://untroubled.org/bcron/"
 SRC_URI="http://untroubled.org/bcron/archive/${P}.tar.gz"
 
@@ -17,8 +23,6 @@ RDEPEND="  sys-apps/findutils
 
 CRON_SYSTEM_CRONTAB="yes"
 
-inherit cron eutils toolchain-funcs
-
 
 src_prepare() {
 	epatch "${FILESDIR}/bcron-0.10-fix-missing-reference.patch"
@@ -30,7 +34,7 @@ src_compile() {
 	echo "${D}/usr/bin" > conf-bin
 	echo "$(tc-getCC) ${CFLAGS}" > conf-cc
 	echo "$(tc-getCC) ${LDFLAGS}" > conf-ld
-	emake || die "make failed"
+	emake
 }
 
 src_install() {
@@ -70,12 +74,12 @@ pkg_config() {
 	local fifo="${ROOT}var/spool/cron/trigger"
 	if [[ ! -e "${fifo}" ]]; then
 		mkfifo "$fifo" || die "mkfifo failed"
+		fowners cron:cron "${fifo}"
+		fperms go-rwx "${fifo}"
 	fi
-	chown cron:cron "${fifo}" || die "chown failed"
-	chmod go-rwx "${fifo}" || die "chmod failed"
 }
 
 pkg_postinst() {
-	elog "Run emerge --config =${PF} to finalize configuration."
+	elog "Run emerge --config =${PF} to finish package configuration."
 	cron_pkg_postinst
 }
