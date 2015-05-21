@@ -11,16 +11,17 @@ LICENSE="BSD-2"
 SLOT="0"
 
 if [[ ${PV} != 9999 ]]; then
-	MY_PV="v${PV}"
+	MY_PV=v${PV}
 	SRC_URI="https://git.shiz.me/shiz/finite/archive/${MY_PV}.tar.gz"
 	KEYWORDS="~amd64"
-	S="${WORKDIR}/${PN}-${MY_PV}"
+	S=${WORKDIR}/${PN}-${MY_PV}
 else
 	inherit git-r3
 	EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
 fi
 
 RDEPEND="!sys-apps/sysvinit"
+
 
 src_compile()
 {
