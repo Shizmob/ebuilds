@@ -5,19 +5,19 @@
 EAPI=5
 
 DESCRIPTION="Fine init environment"
-HOMEPAGE="https://git.shiz.me/shiz/finite"
+HOMEPAGE="https://github.com/Shizmob/finite"
 
 LICENSE="BSD-2"
 SLOT="0"
 
 if [[ ${PV} != 9999 ]]; then
 	MY_PV=v${PV}
-	SRC_URI="https://git.shiz.me/shiz/finite/archive/${MY_PV}.tar.gz"
+	SRC_URI="https://github.com/Shizmob/finite/archive/${MY_PV}.tar.gz"
 	KEYWORDS="~amd64"
 	S=${WORKDIR}/${PN}-${MY_PV}
 else
 	inherit git-r3
-	EGIT_REPO_URI="https://git.shiz.me/shiz/finite.git"
+	EGIT_REPO_URI="https://github.com/Shizmob/finite"
 fi
 
 RDEPEND="!sys-apps/sysvinit"
@@ -30,7 +30,7 @@ src_compile()
 
 src_install()
 {
-	emake DESTDIR="${D}" install-sysvinit
+	emake DESTDIR="${D}" install-sysvinit symlink-sysvinit
 	insinto /etc
 	doins "${FILESDIR}/inittab"
 }
